@@ -59,20 +59,22 @@ class HashMap {
 
   constructor(size = 0) {
     this.hashmap = new Array(size)
-      .fill(null).map(() => new Node_LinkedList.LinkedList());
+      .fill(null)
+      .map(() => new Node_LinkedList.LinkedList())
   }
 
   hash(key) {
     let hashCode = 0;
     for (let i = 0; i < key.length; i++) {
-      hashCode += hashCode + key.charCodeAt(i);
+      hashCode += hashCode + key.charCodeAt(i)
     }
-    return hashCode % this.hashmap.length;
+    return hashCode % this.hashmap.length
   }
 
   assign(key, value) {
     const arrayIndex = this.hash(key);
     const linkedList = this.hashmap[arrayIndex]
+    console.log(`Storing "${value}" at index ${arrayIndex}`)
     if (linkedList.head === null) {
       linkedList.addToHead({key, value})
       return
@@ -98,6 +100,7 @@ class HashMap {
     let current = this.hashmap[arrayIndex].head
     while(current !== null) {
       if (current.data.key === key) {
+        console.log(`\nRetrieving "${current.data.value}" from index ${arrayIndex}`);
         return current.data.value
       }
       current = current.getNextNode()
