@@ -54,6 +54,7 @@ console.log('Value for key "deer":', parkInventory.retrieve('deer'));
 
 
 // Handleling collisions with `separate chaining` strategy
+
 class HashMap {
 
   constructor(size = 0) {
