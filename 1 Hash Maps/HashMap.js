@@ -1,6 +1,6 @@
-const LinkedList = require('./LinkedList')
+const Node_LinkedList = require('./LinkedList')
 
-// Without handleling collisions
+// ************************************************************************************Without handleling collisions
 class HashMap_no_handle_collision {
 
   constructor(size = 0) {
@@ -53,13 +53,13 @@ console.log('Value for key "reed":', parkInventory.retrieve('reed'));
 console.log('Value for key "deer":', parkInventory.retrieve('deer'));
 
 
-// Handleling collisions with `separate chaining` strategy
+// ************************************************************************ Handleling collisions with `separate chaining` strategy
 
 class HashMap {
 
   constructor(size = 0) {
     this.hashmap = new Array(size)
-      .fill(null).map(() => new LinkedList());
+      .fill(null).map(() => new Node_LinkedList.LinkedList());
   }
 
   hash(key) {
@@ -77,8 +77,43 @@ class HashMap {
       linkedList.addToHead({key, value})
       return
     }
+    let current = linkedList.head
+    while (current !== null) {
+      // The key we are looking for and the key of the current node is the same, so we should overwrite the value
+      if (current.data.key === key) {
+        current.data = {key, value}
+      }
+      // No node in the linked list matches the key, so we should add the key-value pair to the list as the tail node
+      if (current.getNextNode() === null) {
+        const lastNode = new Node_LinkedList.Node({key, value})
+        current = current.setNextNode(lastNode)
+        return
+      }
+      current = current.getNextNode();
+    }
   }
+
+  retrieve(key) {
+    const arrayIndex = this.hash(key);
+    let current = this.hashmap[arrayIndex].head
+    while(current !== null) {
+      if (current.data.key === key) {
+        return current.data.value
+      }
+      current = current.getNextNode()
+    }
+    return null
+  }
+
 }
+
+// Test
+// Now no collision in action =)
+const inventory = new HashMap(2);
+inventory.assign('reed', 'marsh plant');
+inventory.assign('deer', 'forest animal');
+console.log('Value for key "reed":', inventory.retrieve('reed'));
+console.log('Value for key "deer":', inventory.retrieve('deer'));
 
 module.exports = HashMap;
 
